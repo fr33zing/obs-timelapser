@@ -9,14 +9,14 @@ from os import path
 tag = "[Timelapser]"
 
 default_input_fps = 1
-default_output_fps = 10
 default_input_ext = ".mkv"
+default_output_fps = 10
 default_output_ext = ".timelapse.mp4"
 
-input_fps = 1
-output_fps = 10
-input_ext = ".mkv"
-output_ext = ".timelapse.mp4"
+input_fps = default_input_fps
+input_ext = default_input_ext
+output_fps = default_output_fps
+output_ext = default_output_ext
 
 
 def on_recording_stop(calldata):
@@ -89,7 +89,6 @@ def script_properties():
     obs.obs_properties_add_text(
         props, "input_ext", "Input Extension", obs.OBS_TEXT_DEFAULT
     )
-
     obs.obs_properties_add_int(
         props, "output_fps", "Output FPS", default_output_fps, 10000, 1
     )
@@ -103,7 +102,6 @@ def script_properties():
 def script_defaults(settings):
     obs.obs_data_set_default_int(settings, "input_fps", default_input_fps)
     obs.obs_data_set_default_string(settings, "input_ext", default_input_ext)
-
     obs.obs_data_set_default_int(settings, "output_fps", default_output_fps)
     obs.obs_data_set_default_string(settings, "output_ext", default_output_ext)
 
