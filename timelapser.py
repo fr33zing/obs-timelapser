@@ -1,6 +1,5 @@
 import obspython as obs
 
-import subprocess
 import shlex
 import glob
 import os
