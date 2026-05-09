@@ -24,7 +24,7 @@ def on_recording_stop(calldata):
     files = glob.glob(path.join(output_dir, file_types))
     latest_file = max(files, key=path.getctime)
 
-    name, ext = path.splitext(path.basename(latest_file))
+    name, _ = path.splitext(path.basename(latest_file))
     ffmpeg_input_file = shlex.quote(latest_file)
     ffmpeg_output_file = shlex.quote(path.join(output_dir, name + output_ext))
     ffmpeg_pts = input_fps / output_fps
@@ -54,11 +54,6 @@ def on_recording_stop(calldata):
             )
 
 
-def main():
-    sh = obs.obs_output_get_signal_handler(obs.obs_frontend_get_recording_output())
-    obs.signal_handler_connect(sh, "stop", on_recording_stop)
-
-
 def script_update(settings):
     input_fps = obs.obs_data_get_int(settings, "input_fps")
     input_ext = obs.obs_data_get_string(settings, "input_ext")
@@ -71,12 +66,6 @@ def script_update(settings):
     output_fps: {output_fps}
     output_ext: {output_ext}"""
     )
-
-
-def script_description():
-    return """When recording stops, automatically create a timelapse using FFmpeg.
-
-Input settings must be adjusted to match your current recording profile."""
 
 
 def script_properties():
@@ -103,6 +92,17 @@ def script_defaults(settings):
     obs.obs_data_set_default_string(settings, "input_ext", default_input_ext)
     obs.obs_data_set_default_int(settings, "output_fps", default_output_fps)
     obs.obs_data_set_default_string(settings, "output_ext", default_output_ext)
+
+
+def script_description():
+    return """When recording stops, automatically create a timelapse using FFmpeg.
+
+Input settings must be adjusted to match your current recording profile."""
+
+
+def main():
+    sh = obs.obs_output_get_signal_handler(obs.obs_frontend_get_recording_output())
+    obs.signal_handler_connect(sh, "stop", on_recording_stop)
 
 
 main()
